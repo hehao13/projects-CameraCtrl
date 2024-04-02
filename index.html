@@ -1,0 +1,116 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>CameraCtrl</title>
+<link href="./CameraCtrl_files/style.css" rel="stylesheet">
+<script type="text/javascript" src="./CameraCtrl_files/jquery.mlens-1.0.min.js"></script> 
+<script type="text/javascript" src="./CameraCtrl_files/jquery.js"></script>
+</head>
+
+<body>
+  <div class="content">
+    <h1><strong>CameraCtrl: Enabling Camera Control for Text-to-Video Generation</strong></h1>
+    <p id="authors" class="serif">
+      <span style="font-size: 1.0em">
+        <a href="https://hehao13.github.io">Hao He<sup>1</sup></a>
+        <a href="https://justimyhxu.github.io">Yinghao Xu<sup>3</sup></a>
+        <a href="https://guoyww.github.io">Yuwei Guo<sup>1</sup></a>
+        <a href="https://web.stanford.edu/~gordonwz/">Gordon Wetzstein<sup>3</sup></a>
+        <a href="http://daibo.info">Bo Dai<sup>2</sup></a>
+        <a href="https://www.ee.cuhk.edu.hk/~hsli/">Hongsheng Li<sup>1</sup></a>
+        <a href="https://ceyuan.me">Ceyuan Yang<sup>2</sup></a>
+      </span>
+      <br>
+      <br>
+      <span style="font-size: 0.9em; margin-top: 0.6em">
+        <a><sup>1</sup>The Chinese University of Hong Kong</a>
+        <a><sup>2</sup>Shanghai Artificial Intelligence Laboratory</a>
+        <a><sup>3</sup>Stanford University</a>
+      </span>
+    </p>
+  
+    <font size="+1">
+      <p style="text-align: center;" class="sansserif">
+        <a href="#bibtex" target="" style="font-weight: bold;">[arXiv Report]</a>&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="https://github.com/hehao13/CameraCtrl" target="" style="font-weight: bold;">[Code]</a>&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="#bibtex" style="font-weight: bold;">[BibTeX]</a>
+      </p><br>
+    </font>
+  
+    <div style="text-align:center;">
+      <img src="./CameraCtrl_files/teaser.png" width="100%" alt="teaser_figure">
+    </div>
+  
+    <!-- <p style="font-size: 1.2em; margin-left:5em; margin-right:5em;" class="serif">
+      We present SparseCtrl, an add-on encoder network upon pre-trained text-to-video (T2V) diffusion models to accept additional
+      temporally sparse conditions for specific keyframe(s), <i>e.g.</i>, sketch/depth/RGB image. Through integration with various modality encoders,
+      SparseCtrl enables the pre-trained T2V for various applications including storyboarding, sketch-to-video, image animation, long video
+      generation, etc. When combined with AnimateDiff and enhanced personalized image backbones, SparseCtrl also achieves
+      controllable, high-quality generation results, as shown in the 2/3/4-th rows.
+    </p> -->
+  </div>
+  
+  
+<div class="content">
+  <p style="text-align:center; font-size: 2em; font-weight: bold" class="sansserif">Abstract</p>
+  <p style="font-size: 1.2em; margin-left:5em; margin-right:5em;" class="serif">Controllability plays a crucial role in video generation since it allows users to create desired content. However, existing models largely overlooked the precise control of camera pose that serves as a cinematic language to express deeper narrative nuances. To alleviate this issue, we introduce <code>CameraCtrl</code>, enabling accurate camera pose control for text-to-video (T2V) models. After precisely parameterizing the camera trajectory, a plug-and-play camera module is then trained on a T2V model, leaving others untouched. Additionally, a comprehensive study on the effect of various datasets is also conducted, suggesting that videos with diverse camera distribution and similar appearances indeed enhance the controllability and generalization. Experimental results demonstrate the effectiveness of <code>CameraCtrl</code> in achieving precise and domain-adaptive camera control, marking a step forward in the pursuit of dynamic and customized video storytelling from textual and camera pose inputs.</p>
+</div>
+
+<div class="content">
+  <p style="text-align:center; font-size: 2em; font-weight: bold" class="sansserif">Demo Video</p>
+  <div style="text-align:center; margin-bottom:1em;">
+    <video class="clickplay" width="80%" controls>
+      <source src="./CameraCtrl_files/Demo_video.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+
+<div class="content">
+  <p style="text-align:center; font-size: 2em; font-weight: bold" class="sansserif">Framework</p> <br>
+  <img src="./CameraCtrl_files/architecture.png" style="width:90%;" alt="architecture_figure" class="summary-img"> <br>
+  <p style="font-size: 1.2em; margin-left:5em; margin-right:5em;" class="serif"> (a) <code>CameraCtrl</code> pipeline. Given a pre-trained T2V model, <code>CameraCtrl</code> trains a camera encoder on it. The camera encoder takes the plücker embedding as input and outputs multi-scale camera representations. These features are then integrated into the temporal attention layers of U-Net at their respective scales to control the video generation process. (b) Camera feature injection process. The camera features <i>c<sub>t</sub></i> and the latent features <i>z<sub>t</sub></i> are first combined through the element-wise addition. A learnable linear layer is adopted to further fuse two representations which are then fed into the first temporal attention layer of each temporal block. The weights of original T2V models are left untouched.
+</div>
+
+<div class="content">
+  <p style="text-align:center; font-size: 2em; font-weight: bold" class="sansserif">Visualization Results</p> <br>
+  <p style="font-size: 1.3em" class="serif"> <strong>Same</strong> text prompt + <strong>Different</strong> camera trajectories</p>
+  <div style="text-align:center; margin-bottom:1em;">
+    <video class="clickplay" width="90%" controls>
+      <source src="./CameraCtrl_files/same_scene.mp4" type="video/mp4">
+    </video>
+  </div> <br>
+  <p style="font-size: 1.3em" class="serif"> <code>CameraCtrl</code> for different domain videos</p> <br>
+  <div style="text-align:center; margin-bottom:1em;">
+    <video class="clickplay" width="90%" controls>
+      <source src="./CameraCtrl_files/different_domain_videos.mp4" type="video/mp4">
+    </video>
+  </div> <br>
+  <p style="font-size: 1.3em" class="serif"> Integration <code>CameraCtrl</code> with other video control methods</p> <br>
+  <div style="text-align:center; margin-bottom:1em;">
+    <video class="clickplay" width="96%" controls>
+      <source src="./CameraCtrl_files/integrate_sparsectrl.mp4" type="video/mp4">
+    </video>
+  </div> <br>
+</div>
+
+<div class="content" id="bibtex">
+  <p style="text-align:left; font-size: 2em; font-weight: bold" class="serif">BibTeX</p>
+  <code>
+  @misc{he2024cameractrl,<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;title={CameraCtrl: Enabling Camera Control for Text-to-Video Generation},<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;author={Hao He and Yinghao Xu and Yuwei Guo and Gordon Wetzstein and Bo Dai and Hongsheng Li and Ceyuan Yang},<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;year={2024},<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;eprint={},<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;archivePrefix={arXiv},<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;primaryClass={cs.CV}<br>
+  }
+  </code>
+</div>
+
+<div class="content">
+  <p class="serif">
+    We borrow the source code of this project page from  <a href="https://dreambooth.github.io/">DreamBooth</a>.
+  </p>
+</div>
+</body>
+</html>
