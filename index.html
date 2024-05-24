@@ -9,7 +9,7 @@
 
 <body>
   <div class="content">
-    <h1><strong>CameraCtrl: Enabling Camera Control for Text-to-Video Generation</strong></h1>
+    <h1><strong>CameraCtrl: Enabling Camera Control for Video <br> Diffusion Models</strong></h1>
     <p id="authors" class="serif">
       <span style="font-size: 1.0em">
         <a href="https://hehao13.github.io">Hao He<sup>1</sup></a>
@@ -33,27 +33,20 @@
       <p style="text-align: center;" class="sansserif">
         <a href="https://arxiv.org/abs/2404.02101" target="" style="font-weight: bold;">[arXiv Report]</a>&nbsp;&nbsp;&nbsp;&nbsp;
         <a href="https://github.com/hehao13/CameraCtrl" target="" style="font-weight: bold;">[Code]</a>&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="#bibtex" style="font-weight: bold;">[BibTeX]</a>
+        <a href="#bibtex" style="font-weight: bold;">[BibTeX]</a>&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="https://huggingface.co/spaces/hehao13/CameraCtrl-svd-xt" style="font-weight: bold;">[HF Demo]</a>
       </p><br>
     </font>
   
     <div style="text-align:center;">
       <img src="./CameraCtrl_files/teaser.png" width="100%" alt="teaser_figure">
     </div>
-  
-    <!-- <p style="font-size: 1.2em; margin-left:5em; margin-right:5em;" class="serif">
-      We present SparseCtrl, an add-on encoder network upon pre-trained text-to-video (T2V) diffusion models to accept additional
-      temporally sparse conditions for specific keyframe(s), <i>e.g.</i>, sketch/depth/RGB image. Through integration with various modality encoders,
-      SparseCtrl enables the pre-trained T2V for various applications including storyboarding, sketch-to-video, image animation, long video
-      generation, etc. When combined with AnimateDiff and enhanced personalized image backbones, SparseCtrl also achieves
-      controllable, high-quality generation results, as shown in the 2/3/4-th rows.
-    </p> -->
   </div>
   
   
 <div class="content">
   <p style="text-align:center; font-size: 2em; font-weight: bold" class="sansserif">Abstract</p>
-  <p style="font-size: 1.2em; margin-left:5em; margin-right:5em;" class="serif">Controllability plays a crucial role in video generation since it allows users to create desired content. However, existing models largely overlooked the precise control of camera pose that serves as a cinematic language to express deeper narrative nuances. To alleviate this issue, we introduce <code>CameraCtrl</code>, enabling accurate camera pose control for text-to-video (T2V) models. After precisely parameterizing the camera trajectory, a plug-and-play camera module is then trained on a T2V model, leaving others untouched. Additionally, a comprehensive study on the effect of various datasets is also conducted, suggesting that videos with diverse camera distribution and similar appearances indeed enhance the controllability and generalization. Experimental results demonstrate the effectiveness of <code>CameraCtrl</code> in achieving precise and domain-adaptive camera control, marking a step forward in the pursuit of dynamic and customized video storytelling from textual and camera pose inputs.</p>
+  <p style="font-size: 1.2em; margin-left:5em; margin-right:5em;" class="serif">Controllability plays a crucial role in video generation, as it allows users to create and edit content more precisely. Existing models, however, lack control of camera pose. To alleviate this issue, we introduce <code>CameraCtrl</code>, enabling accurate camera pose control for video diffusion models. Our approach explores effective camera trajectory parameterization along with a plug-and-play camera pose control module that is trained on top of a video diffusion model, leaving other modules of the base model untouched. Moreover, a comprehensive study on the effect of various training datasets is conducted, suggesting that videos with diverse camera distributions and similar appearance to the base model indeed enhance controllability and generalization. Experimental results demonstrate the effectiveness of <code>CameraCtrl</code> in achieving precise camera control with different video generation models, marking a step forward in the pursuit of dynamic and customized video storytelling from textual and camera pose inputs.</p>
 </div>
 
 <div class="content">
@@ -68,27 +61,54 @@
 <div class="content">
   <p style="text-align:center; font-size: 2em; font-weight: bold" class="sansserif">Framework</p> <br>
   <img src="./CameraCtrl_files/architecture.png" style="width:90%;" alt="architecture_figure" class="summary-img"> <br>
-  <p style="font-size: 1.2em; margin-left:5em; margin-right:5em;" class="serif"> (a) <code>CameraCtrl</code> pipeline. Given a pre-trained T2V model, <code>CameraCtrl</code> trains a camera encoder on it. The camera encoder takes the plücker embedding as input and outputs multi-scale camera representations. These features are then integrated into the temporal attention layers of U-Net at their respective scales to control the video generation process. (b) Camera feature injection process. The camera features <i>c<sub>t</sub></i> and the latent features <i>z<sub>t</sub></i> are first combined through the element-wise addition. A learnable linear layer is adopted to further fuse two representations which are then fed into the first temporal attention layer of each temporal block. The weights of original T2V models are left untouched.
+  <p style="font-size: 1.2em; margin-left:5em; margin-right:5em;" class="serif"> <strong>Framework of <code>CameraCtrl</code></strong> (a) Given a pre-trained video diffusion model, <code>CameraCtrl</code> trains a camera encoder on it, which takes the Plücker embedding as input and outputs multi-scale camera representations. These features are then integrated into the temporal attention layers of the U-Net at their respective scales to control the video generation process. (b) Details of the camera injection process. The camera features and the latent features are first combined through the element-wise addition. A learnable linear layer is adopted to further fuse two representations which are then fed into the first temporal attention layer of each temporal block.
 </div>
 
 <div class="content">
   <p style="text-align:center; font-size: 2em; font-weight: bold" class="sansserif">Visualization Results</p> <br>
-  <p style="font-size: 1.3em" class="serif"> <strong>Same</strong> text prompt + <strong>Different</strong> camera trajectories</p>
+  <p style="font-size: 1.3em" class="serif"> <code>CameraCtrl</code> for general text-to-video generation</p> <br>
   <div style="text-align:center; margin-bottom:1em;">
     <video class="clickplay" width="90%" controls>
-      <source src="./CameraCtrl_files/same_scene.mp4" type="video/mp4">
+      <source src="./CameraCtrl_files/generat_t2v_object.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div style="text-align:center; margin-bottom:1em;">
+    <video class="clickplay" width="90%" controls>
+      <source src="./CameraCtrl_files/general_t2v_scene.mp4" type="video/mp4">
     </video>
   </div> <br>
-  <p style="font-size: 1.3em" class="serif"> <code>CameraCtrl</code> for different domain videos</p> <br>
+  <p style="font-size: 1.3em" class="serif"> Same text prompt + Different camera trajectories</p>
   <div style="text-align:center; margin-bottom:1em;">
     <video class="clickplay" width="90%" controls>
-      <source src="./CameraCtrl_files/different_domain_videos.mp4" type="video/mp4">
+      <source src="./CameraCtrl_files/different_traj_same_prompt.mp4" type="video/mp4">
+    </video>
+  </div> <br>
+  <p style="font-size: 1.3em" class="serif"> <code>CameraCtrl</code> for personalized text-to-video generation</p> <br>
+  <div style="text-align:center; margin-bottom:1em;">
+    <video class="clickplay" width="90%" controls>
+      <source src="./CameraCtrl_files/realistic_vision.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div style="text-align:center; margin-bottom:1em;">
+    <video class="clickplay" width="90%" controls>
+      <source src="./CameraCtrl_files/toonyou.mp4" type="video/mp4">
+    </video>
+  </div> <br>
+  <p style="font-size: 1.3em" class="serif"> <code>CameraCtrl</code> for image-to-video generation</p>
+  <div style="text-align:center; margin-bottom:1em;">
+    <video class="clickplay" width="90%" controls>
+      <source src="./CameraCtrl_files/i2v_object.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div style="text-align:center; margin-bottom:1em;">
+    <video class="clickplay" width="90%" controls>
+      <source src="./CameraCtrl_files/i2v_scene.mp4" type="video/mp4">
     </video>
   </div> <br>
   <p style="font-size: 1.3em" class="serif"> Integration <code>CameraCtrl</code> with other video control methods</p> <br>
   <div style="text-align:center; margin-bottom:1em;">
     <video class="clickplay" width="96%" controls>
-      <source src="./CameraCtrl_files/integrate_sparsectrl.mp4" type="video/mp4">
+      <source src="./CameraCtrl_files/integrate_with_others.mp4" type="video/mp4">
     </video>
   </div> <br>
 </div>
